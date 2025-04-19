@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Todo Apps</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/style.css">
+</head>
+
+<body class="bg-light">
+
+  <header class="bg-primary text-white py-3 text-center">
+    <h1 class="m-0">Todo List</h1>
+  </header>
+
+  <div class="container my-5">
+    <div class="card shadow mb-4">
+      <div class="card-header text-center">
+        <h2 class="m-0">Tambah yang harus dilakukan</h2>
+      </div>
+      <div class="card-body">
+        <form id="form" action="/add" method="post">
+          <div class="mb-3">
+            <label for="task" class="form-label">Masukkan hal yang akan dilakukan</label>
+            <input type="text" class="form-control" id="title" name="task" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card shadow mb-4">
+      <div class="card-header">
+        <h2 class="m-0">Yang Harus Dilakukan</h2>
+      </div>
+      <div class="card-body" id="todos">
+        <div th:each="todo : ${todos}" class="list-group mb-2">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span th:text="${todo.task}"></span>
+              <form th:action="@{/done/{id}(id=${todo.id})}" method="post">
+                <button type="submit" class="btn btn-success btn-sm">Selesai</button>
+              </form>
+            </div>  
+          </div>
+      </div>
+    </div>
+
+
+    <div class="card shadow mb-4">
+      <div class="card-header">
+        <h2 class="m-0">Yang Sudah Dilakukan</h2>
+      </div>
+      <div class="card-body" id="completed-todos">
+        <div th:each="todo : ${todosFinished}" class="list-group mb-2">
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span th:text="${todo.task}"></span>
+              <div class="btn-group">
+                <form th:action="@{/undo/{id}(id=${todo.id})}" method="post">
+                  <button type="submit" class="btn btn-warning btn-sm">Ulangi</button>
+                </form>
+                <form th:action="@{/delete/{id}(id=${todo.id})}" method="post">
+                  <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+      </div>
+    </div>
+
+  </div>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
